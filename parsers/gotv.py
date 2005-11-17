@@ -15,7 +15,7 @@ class GoTvParser(base.StationBase):
     def parse(self):
         """Call feed first"""
         
-        track = self.cut_content("\('VideoJetzt'\).innerHTML != '", "'\)")[0]
+        track = self.cut_content("('VideoJetzt').innerHTML != '", "')")[0]
         # remove eventually contained excape backslashes
         track = track.replace('\\', '')
         

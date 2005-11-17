@@ -59,12 +59,24 @@ class StationBase(object):
     def cut_content(self, start, stop, content=True):
         """This is to be called by the plugins
         Content is the content to be searched."""
+        start = self.escape_specialchars(start)
+        stop = self.escape_specialchars(stop)
+        
         rex = self.create_regexp(start, stop)
         if content:
             return rex.findall(self.pagecontent)
         else:
             # else match the provided content
             return rex.findall(content)
+    
+    def escape_specialchars(self, regexp):
+        # special characters to escape
+        escapechars = ['\\', '[', ']', '(', ')']
+        
+        for char in escapechars:
+            regexp = regexp.replace(char, '\\' + char)
+        
+        return regexp
 
 Parser = None
 
