@@ -63,7 +63,7 @@ class StationBase(object):
         stop = self.escape_specialchars(stop)
         
         rex = self.create_regexp(start, stop)
-        if content:
+        if content == True:
             return rex.findall(self.pagecontent)
         else:
             # else match the provided content
