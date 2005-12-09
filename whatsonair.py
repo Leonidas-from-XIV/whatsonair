@@ -115,11 +115,22 @@ def main():
     options, args = opts.parse_args()
     
     if options.version:
-        print "What's On Air \t%s" % __version__
-        print 
-        for parser in allparsers.values():
-            print "%s Parser\t%s" % (parser.__station__, parser.__version__)
+        # show version
         
+        # get the length of the longest parser name
+        max_length = 0
+        for parser in allparsers.values():
+            if len(parser.__station__) > max_length:
+                max_length = len(parser.__station__)
+        # add one more space
+        max_length += 1
+        
+        print insert_spaces("What's On Air", max_length) + __version__ 
+        print
+        for parser in allparsers.values():
+            print insert_spaces(parser.__station__, max_length) + parser.__version__
+        
+        # version shown: exit now
         sys.exit(0)
     
     if options.all:
@@ -151,6 +162,12 @@ def print_current(parser, descriptive):
         print current.__station__,
     # print the station informations
     print current.current_track()
+
+def insert_spaces(text, spaces):
+    """Inserts spaces at the end of the string to make it long.
+    This is useful for a constant formatting"""
+    append_spaces = spaces - len(text)
+    return text + append_spaces * ' '
 
 if __name__ == '__main__':
     main()
