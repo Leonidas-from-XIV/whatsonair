@@ -6,29 +6,36 @@
 import subprocess, telnetlib
 
 class VLCOperator(object):
+    """Controller for VideoLAN Client (VLC)"""
+    
     def __init__(self, vlc_command):
-        self.command = '%s --extraintf telnet' % vlc_command
+        """Initializes the controller"""
+        #self.command = '%s --extraintf telnet' % vlc_command
+        self.command = '%s -I telnet' % vlc_command
         self.vlc_running = False
     
     def play(self, mrl):
+        """Plays the file/stream/whatever provided by the MRL"""
         # first quit vlc if it is already running
         if self.vlc_running:
             self.shutdown()
-
+        
+        # start vlc
         self.proc = subprocess.Popen('%s play %s' % (self.command, mrl),
             shell=False)
+            
         # register vlc as running
         self.vlc_running = True
     
     def shutdown(self):
         """Shuts down VLC"""
-        # connect
+        # connect to vlc
         self.conn = telnetlib.Telnet('127.0.0.1', 4212)
-        # login
+        # login as admin
         self.conn.write('admin\n')
-        # close
+        # tell vlc to quit
         self.conn.write('shutdown\n')
-        # register
+        # register vlc as stopped
         self.vlc_running = False
     
 def discover_executable():
@@ -45,17 +52,13 @@ def discover_executable():
     return location
 
 if __name__ == '__main__':
-    import time
-    executable = discover_executable()
-    vlco = VLCOperator(executable)
+    vlco = VLCOperator(discover_executable())
     
-    vlco.play('rtsp://213.254.238.73:554/real.amazon-de.eu2/phononet/B/0/0/0/0/6/L/7/X/Q/01.02.rm?cloakport=80,554,7070')
-    #vlco.play('file://C:/hell.mp3')
+    print 'Opening'
+    vlco.play('mms://stream1.orf.at/fm4_live')
     print 'Waiting'
-    time.sleep(10)
+    import time
+    time.sleep(20)
     print 'Quitting'
     vlco.shutdown()
     print 'Dying'
-
-
-
