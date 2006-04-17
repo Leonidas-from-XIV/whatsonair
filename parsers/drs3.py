@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: latin-1 -*-
 
-import base, re
+import base
 
 class DRS3Parser(base.StationBase):
     """DRS3"""

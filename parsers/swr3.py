@@ -7,9 +7,10 @@ class SWR3Parser(base.StationBase):
     """Parser for SWR 3"""
     
     __station__ = 'SWR3'
-    __version__ = '0.1.0'
+    __version__ = '0.1.1'
     
-    def __init__(self, url='http://www.swr3.de/musik/musikrecherche/last13.html'):
+    def __init__(self, url='http://www.swr3.de/musik/musikrecherche/last13.html',
+        stream='rtsp://195.52.221.172/farm/*/encoder/swr3/livestream.rm'):
         base.StationBase.__init__(self, url)
     
     def parse(self):

@@ -13,9 +13,10 @@ class FM4Parser(base.StationBase):
     But then we loose the ability to parse OE3 as well"""
     
     __station__ = 'FM4'
-    __version__ = '0.9.2'
+    __version__ = '0.9.3'
     
-    def __init__(self, url='http://hop.orf.at/img-trackservice/fm4.html'):
+    def __init__(self, url='http://hop.orf.at/img-trackservice/fm4.html',
+        stream='mms://stream1.orf.at/fm4_live'):
         base.StationBase.__init__(self, url)
     
     def parse(self):

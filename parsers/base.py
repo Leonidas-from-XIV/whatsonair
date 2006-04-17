@@ -19,17 +19,17 @@ class StationBase(object):
     __station__ = 'StationBase'
     __version__ = '1.0.0'
     
-    pagecontent = None
-    
-    def __init__(self, url):
+    def __init__(self, url, stream=None):
         """Initialize some values."""
-        self.crawlerurl = url
+        self.crawler_url = url
+        self.stream_url = stream
+        self.pagecontent = None
     
     def feed(self):
-        """Loads"""
+        """Loads the page content from the internet"""
         timeout = urllib.socket.getdefaulttimeout()
         urllib.socket.setdefaulttimeout(10.0)
-        parsepage = urllib.urlopen(self.crawlerurl)
+        parsepage = urllib.urlopen(self.crawler_url)
         self.pagecontent = parsepage.read()
         parsepage.close()
         urllib.socket.setdefaulttimeout(timeout)
@@ -50,7 +50,7 @@ class StationBase(object):
             return text.capitalize()
     
     def create_regexp(self, start, stop):
-        """Creates regexp"""
+        """Creates regular expressions"""
         # this expression is non-greedy: it uses .*? instead of .*
         reg_exp_code = r'(?<=%s).*?(?=%s)' % (start, stop)
         compiled = re.compile(reg_exp_code)
@@ -70,6 +70,7 @@ class StationBase(object):
             return rex.findall(content)
     
     def escape_specialchars(self, regexp):
+        """Escapes special characters in regular expressions"""
         # special characters to escape
         escapechars = ['\\', '[', ']', '(', ')']
         
