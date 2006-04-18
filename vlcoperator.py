@@ -3,7 +3,7 @@
 
 # telnet: 127.0.0.1 4212
 
-import subprocess, telnetlib
+import subprocess, urllib, time, re
 
 class VLCOperator(object):
     """Controller for VideoLAN Client (VLC)"""
@@ -11,32 +11,43 @@ class VLCOperator(object):
     def __init__(self, vlc_command):
         """Initializes the controller"""
         #self.command = '%s --extraintf telnet' % vlc_command
-        self.command = '%s -I telnet' % vlc_command
-        self.vlc_running = False
+        command = '%s --intf http' % vlc_command
+        subprocess.Popen(command, shell=False)
     
     def play(self, mrl):
         """Plays the file/stream/whatever provided by the MRL"""
-        # first quit vlc if it is already running
-        if self.vlc_running:
-            self.shutdown()
+        pass
+    
+    def addtoqueue(self, mrl):
+        p = urllib.urlopen("http://localhost:8080/?control=add&mrl=%s" % mrl)
+        p.close()
+    
+    def stoptrack(self):
+        p = urllib.urlopen("http://localhost:8080/?control=stop")
+        p.close()
+    
+    def starttrack(self):
+        """Starts the last track in the queue"""
+        # get the queue
+        p = urllib.urlopen('http://localhost:8080/')
+        result = p.read()
+        p.close()
         
-        # start vlc
-        self.proc = subprocess.Popen('%s play %s' % (self.command, mrl),
-            shell=False)
-            
-        # register vlc as running
-        self.vlc_running = True
+        # get the sequence numbers
+        rex = re.compile(r'<a href="\?control=play&amp;item=(\d)*?">')
+        elements = rex.findall(result)
+        
+        # start the last track
+        p = urllib.urlopen('http://localhost:8080/?control=play&item=%s' % elements[-1])
+        p.close()
     
     def shutdown(self):
-        """Shuts down VLC"""
-        # connect to vlc
-        self.conn = telnetlib.Telnet('127.0.0.1', 4212)
-        # login as admin
-        self.conn.write('admin\n')
-        # tell vlc to quit
-        self.conn.write('shutdown\n')
-        # register vlc as stopped
-        self.vlc_running = False
+        try:
+            p = urllib.urlopen('http://admin:admin@localhost:8080/admin/?control=shutdown')
+            #p.close()
+        except AttributeError:
+            # silence it
+            pass
     
 def discover_executable():
     """Searches the VideoLAN CLient executable"""
@@ -55,9 +66,11 @@ if __name__ == '__main__':
     vlco = VLCOperator(discover_executable())
     
     print 'Opening'
-    vlco.play('mms://stream1.orf.at/fm4_live')
+    #time.sleep(1)
+    vlco.addtoqueue('mms://stream1.orf.at/fm4_live')
+    #time.sleep(1)
+    vlco.starttrack()
     print 'Waiting'
-    import time
     time.sleep(20)
     print 'Quitting'
     vlco.shutdown()
