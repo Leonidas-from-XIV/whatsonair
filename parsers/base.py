@@ -68,7 +68,22 @@ class StationBase(object):
         else:
             # else match the provided content
             return rex.findall(content)
-    
+
+    def cut_content_simple(self, start, stop, content=True):
+        content = self.pagecontent
+        scanning = True
+        startpoint = -1
+        chunks = list()
+        while scanning:
+            try:
+                startpoint = content.index(start, startpoint + 1)
+                stoppoint = content.index(stop, startpoint + 1)
+                chunkstart = startpoint + len(start)
+
+                chunks.append(content[chunkstart:stoppoint])
+            except ValueError:
+                return chunks
+
     def escape_specialchars(self, regexp):
         """Escapes special characters in regular expressions"""
         # special characters to escape
