@@ -7,35 +7,26 @@ class SWR3Parser(base.StationBase):
     """Parser for SWR 3"""
     
     __station__ = 'SWR3'
-    __version__ = '0.1.1'
+    __version__ = '0.2.0'
     
-    def __init__(self, url='http://www.swr3.de/musik/musikrecherche/last13.html',
+    def __init__(self, url='http://www.swr3.de/musik/musikrecherche/-/id=47424/nid=47424/did=202234/1213ds4/index.html',
         stream='rtsp://195.52.221.172/farm/*/encoder/swr3/livestream.rm'):
         base.StationBase.__init__(self, url)
     
     def parse(self):
         """Call feed first"""
-        
-        # first: remove all that nasty spaces and linebreaks
-        self.pagecontent = self.pagecontent.replace('\n', '')
-        self.pagecontent = self.pagecontent.replace('          ', '')
-        self.pagecontent = self.pagecontent.replace('  ', '')
-        
-        # split the content
-        light_tracks = self.cut_content("<td valign='top' bgcolor='#E8E8E8'>", "</td>")
-        self.artist, self.title = light_tracks[0:2]
-            
-        # remove eventual html tags here
-        rex = re.compile("<.*?>")
-        self.title = rex.sub('', self.title)
-        
+        soup = base.Soup(self.pagecontent)
+        elements = [element.string for element in
+                base.select(soup, 'table tr a')]
+        artists = elements[0::2]
+        titles = elements[1::2]
+        combined = zip(artists, titles)
+
+        artist, self.title = combined[0]
+        self.artist = self.uncommafy(artist)
     
     def current_track(self):
-        if self.artist != '':
-            return "%s - %s" % (self.artist, self.title)
-        else:
-            # no title - means "News" or things like this
-            return self.title
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = SWR3Parser
 

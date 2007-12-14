@@ -60,6 +60,16 @@ class StationBase(object):
             return reduce(lambda x, y: x.capitalize() + ' ' + y.capitalize(), chunks)
         else:
             return text.capitalize()
+
+    def uncommafy(self, text):
+        """Uncommafy makes name display easier.
+        If the artists name is given as LASTNAME, FIRSTNAME
+        this method splits it and converts it into FIRSTNAME LASTNAME"""
+        parts = text.split(', ')
+        if len(parts) == 2:
+            return "%s %s" % (parts[1], parts[0])
+        else:
+            return text
     
     def create_regexp(self, start, stop):
         """Creates regular expressions"""
