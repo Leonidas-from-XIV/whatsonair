@@ -25,8 +25,10 @@ class Radio24Parser(base.StationBase):
         # get all texts
         texts = parent.findAll(text=True)
         # convert and save these
-        self.artist = self.capstext(texts[1])
-        self.title = self.capstext(texts[-1])
+        artist = texts[1].strip()
+        title = texts[-1].strip()
+        self.artist = self.capstext(artist)
+        self.title = self.capstext(title)
     
     def current_track(self):
         """Returns the current playing artist"""

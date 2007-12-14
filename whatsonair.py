@@ -6,7 +6,7 @@ Created by the What's On Air team, led by Marek Kubica.
 
 This program is under GPL."""
 
-import sys, os, os.path, optparse
+import sys, os, os.path, optparse, socket
 
 __version__ = '0.8.8'
 
@@ -164,7 +164,7 @@ def print_current(parser, descriptive):
 
     # let the parser parse the gotten informations
     current.parse()
-    
+
     if descriptive:
         # add the station title if requested
         print current.__station__,
