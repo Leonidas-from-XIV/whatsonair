@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: utf-8 -*-
 
 import base
 
@@ -7,23 +7,32 @@ class EinsLiveParser(base.StationBase):
     """Parser for EinsLive"""
     
     __station__ = 'EinsLive'
-    __version__ = '0.1.0'
+    __version__ = '0.2.0'
     
-    def __init__(self, url='http://www.einslive.de/diemusik/dieplaylists/die_letzten_12_titel/index.phtml'):
+    def __init__(self, url='http://www.einslive.de/musik/playlists/'):
         base.StationBase.__init__(self, url)
     
     def parse(self):
         """Call feed first"""
-        titles = self.cut_content('<TD valign="top" class="cont">', '&nbsp;</TD>')
-        titles = titles[1::2]
+        # create the soup and convert HTML entities
+        soup = base.Soup(self.pagecontent, convertEntities='html')
         
-        artists = self.cut_content('<TD valign="top" class="contbold">', '</TD>')
-        
-        both = zip(artists, titles)
-        self.artist, self.title = both[0]
+        # list of artists and their tracks
+        tracks = list()
+
+        # get all elements which are td.bold (that's the artists)
+        artists = base.select(soup, 'td.bold')
+
+        for artist in artists:
+            # find the next element (being hopefully the title)
+            title = artist.findNextSibling()
+            # append the artists name and title to the list
+            tracks.append((artist.string, title.string))
+
+        self.artist, self.title = tracks[0]
     
     def current_track(self):
-        return "%s - %s" % (self.capstext(self.artist), self.capstext(self.title))
+        return "%s - %s" % (self.artist, self.title)
 
 Parser = EinsLiveParser
 
