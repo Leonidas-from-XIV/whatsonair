@@ -1,7 +1,12 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
+# stdlib imports
 import urllib, re
+# beautiful soup (or some module with a BS interface)
+from BeautifulSoup import BeautifulSoup as Soup
+# soup select for CSS selectors
+from soupselect import select
 
 class StationBase(object):
     """The base class for each radio station parser
@@ -17,7 +22,7 @@ class StationBase(object):
     is parsed and all values initialized. After that, curent_track() can
     be called to get the currently playing track."""
     __station__ = 'StationBase'
-    __version__ = '1.0.0'
+    __version__ = '1.1.0'
     
     def __init__(self, url, stream=None):
         """Initialize some values."""
@@ -27,16 +32,23 @@ class StationBase(object):
     
     def feed(self):
         """Loads the page content from the internet"""
+        # get the default timeout
         timeout = urllib.socket.getdefaulttimeout()
+        # set the new timeout to ten seconds
         urllib.socket.setdefaulttimeout(10.0)
+        
+        # open the page to read and get the content
         parsepage = urllib.urlopen(self.crawler_url)
         self.pagecontent = parsepage.read()
+        #self.soup = Soup(self.pagecontent)
+
+        # close the page and re-set the timeout
         parsepage.close()
         urllib.socket.setdefaulttimeout(timeout)
     
     def current_track(self):
         """Return the current track in the format
-        ARTIST - TITLE as string, unicode is also ok"""
+        ARTIST - TITLE as unicode object"""
         raise NotImplementedError("Abstract class")
     
     def capstext(self, text):

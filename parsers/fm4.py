@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -13,7 +13,6 @@ class FM4Parser(base.StationBase):
     But then we loose the ability to parse OE3 as well"""
     
     __station__ = 'FM4'
-    __version__ = '0.9.3'
     
     def __init__(self, url='http://hop.orf.at/img-trackservice/fm4.html',
         stream='mms://stream1.orf.at/fm4_live'):
@@ -21,14 +20,20 @@ class FM4Parser(base.StationBase):
     
     def parse(self):
         """Call feed first"""
-        artists = self.cut_content('<span class="artist">', '</span><br/>')
-        self.artist = artists[-1]
-        
-        titles = self.cut_content('class="tracktitle">', '</span> <span class="separator">')
-        self.title = titles[-1]
+        # get the titles and the artists
+        soup = base.Soup(self.pagecontent)
+        titles = [node.string for node in
+                base.select(soup, 'span.tracktitle')]
+        artists = [node.string for node in
+                base.select(soup, 'span.artist')]
+
+        # combine these
+        combined = zip(artists, titles)
+        # get the last artist and title
+        self.artist, self.title = combined[-1]
     
     def current_track(self):
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = FM4Parser
 

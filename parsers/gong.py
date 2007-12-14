@@ -7,27 +7,21 @@ class GongParser(base.StationBase):
     """The parser for Gong"""
     
     __station__ = 'Gong'
-    __version__ = '0.9.2'
+    __version__ = '0.9.3'
     
-    def __init__(self, url='http://web1.beamgate.com/Gong/getPlaylist.jsp'):
+    def __init__(self, url='http://www.radiogong.de/gongphp/header.php'):
         base.StationBase.__init__(self, url)
     
     def parse(self):
         """Call feed first"""
-        track = self.cut_content('<td class="liedertext">', '</td>')[1]
-        try:
-            self.artist, self.title = track.split(': ')
-        except ValueError, e:
-            # sometimes the site does not provide the tracks' title,
-            #+so set it to None
-            self.artist = track
-            self.title = None
+        track = self.cut_content_simple('%2C+', '+%2A')[0]
+        artist, title = track.split('%2C+')
+
+        self.artist = self.capstext(artist.replace('+', ' '))
+        self.title = title.replace('+', ' ')
     
     def current_track(self):
-        if self.title != None:
-            return "%s - %s" % (self.capstext(self.artist), self.capstext(self.title))
-        else:
-            return self.capstext(self.artist)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = GongParser
 
