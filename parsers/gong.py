@@ -7,7 +7,6 @@ class GongParser(base.StationBase):
     """The parser for Gong"""
     
     __station__ = 'Gong'
-    __version__ = '0.9.3'
     
     def __init__(self, url='http://www.radiogong.de/gongphp/header.php'):
         base.StationBase.__init__(self, url)

@@ -22,7 +22,6 @@ class StationBase(object):
     is parsed and all values initialized. After that, curent_track() can
     be called to get the currently playing track."""
     __station__ = 'StationBase'
-    __version__ = '1.1.0'
     
     def __init__(self, url, stream=None):
         """Initialize some values."""

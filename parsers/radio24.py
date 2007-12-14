@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- encoding: UTF-8 -*-
 
-import base, urllib
+import base
 
 class Radio24Parser(base.StationBase):
     """Parser for Radio24"""
     
     __station__ = 'Radio24'
-    __version__ = '0.2.0'
     
     def __init__(self, url='http://www.radio24.ch/ext/webradio/onair_small.php',
         stream='http://dms-cl-011.skypro-media.net/radio24-hi'):
@@ -32,7 +31,7 @@ class Radio24Parser(base.StationBase):
     
     def current_track(self):
         """Returns the current playing artist"""
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = Radio24Parser
 

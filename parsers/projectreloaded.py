@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: UTF-8 -*-
 
-import base, urllib2, time, re
+import base, time, re
 
 class ProjectReloadedParser(base.StationBase):
     """Parser for Project-Reloaded
@@ -9,7 +9,6 @@ class ProjectReloadedParser(base.StationBase):
     Stream  : http://62.26.4.172:8010/;stream.nsv
               rtsp://62.26.161.89/projectreloaded$livestream.wma"""
     __station__ = 'Project Reloaded'
-    __version__ = '0.0.1'
 
     def __init__(self, url=None):
         if url is None:
@@ -26,10 +25,9 @@ class ProjectReloadedParser(base.StationBase):
 
     def current_track(self):
         if self.artist is not None and self.title is not None:
-            return "%s - %s" % (self.artist, self.title)
+            return u"%s - %s" % (self.artist, self.title)
         else:
-            # TODO: let this raise a proper exception (or parse)
-            return 'No song playing at the moment'
+            raise ValueError('No song at the moment')
 
 Parser = ProjectReloadedParser
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class HR3Parser(base.StationBase):
     """HR3"""
     
     __station__ = 'HR3'
-    __version__ = '0.1.2'
     
     def __init__(self, url='http://www3.admin.hr-online.de/playlist/playlist.php?tpl=hr3neu'):
         base.StationBase.__init__(self, url)
@@ -24,7 +23,7 @@ class HR3Parser(base.StationBase):
         self.artist, self.title = bound[0]
     
     def current_track(self):
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = HR3Parser
 

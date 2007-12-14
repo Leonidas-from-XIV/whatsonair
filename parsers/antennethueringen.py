@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class AntenneThueringenParser(base.StationBase):
     """Parser for Antenne Thueringen"""
     
     __station__ = 'AntenneThueringen'
-    __version__ = '0.0.9'
     
     def __init__(self, url='http://www.antennethueringen.de/sammler/kaufen.php'):
         base.StationBase.__init__(self, url)

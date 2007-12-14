@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class NJoyParser(base.StationBase):
     """NJoy"""
     
     __station__ = 'NJoy'
-    __version__ = '0.1.2'
     
     def __init__(self, url='http://www1.n-joy.de/pages_special/0,,SPM2156,00.html'):
         base.StationBase.__init__(self, url)
@@ -23,11 +22,12 @@ class NJoyParser(base.StationBase):
 
         try:
             self.artist, self.title = both[-1]
+            self.artist = self.capstext(self.artist)
         except IndexError:
             raise ValueError('There is currently no song')
     
     def current_track(self):
-        return "%s - %s" % (self.capstext(self.artist), self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = NJoyParser
 

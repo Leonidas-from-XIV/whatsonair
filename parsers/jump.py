@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class JumpParser(base.StationBase):
     """Parser for Jump Radio"""
     
     __station__ = 'Jump'
-    __version__ = '0.0.1'
     
     def __init__(self, url='http://www.jumpradio.de/navi/onair.xml'):
         base.StationBase.__init__(self, url)
@@ -20,7 +19,7 @@ class JumpParser(base.StationBase):
     
     def current_track(self):
         """Returns the current playing artist"""
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = JumpParser
 

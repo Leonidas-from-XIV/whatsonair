@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- encoding: UTF-8 -*-
 
 import base, re
 
@@ -9,7 +9,6 @@ class PlanetRadioParser(base.StationBase):
     """Parser for PlanetRadio"""
     
     __station__ = 'PlanetRadio'
-    __version__ = '0.2.1'
     
     def __init__(self, url='http://www.planetradio.de/p_mt.php'):
         base.StationBase.__init__(self, url)
@@ -39,7 +38,7 @@ class PlanetRadioParser(base.StationBase):
         self.artist = self.capstext(tracks[0][1].string)
     
     def current_track(self):
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = PlanetRadioParser
 

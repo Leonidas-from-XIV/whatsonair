@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class Antenne1Parser(base.StationBase):
     """Parser for Antenne 1"""
     
     __station__ = 'Antenne1'
-    __version__ = '0.1.0'
     
     def __init__(self, url='http://antenne1.de/index_start.php'):
         base.StationBase.__init__(self, url)

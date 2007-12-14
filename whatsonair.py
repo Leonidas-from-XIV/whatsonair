@@ -96,10 +96,8 @@ def main():
     plugcontrol = PluginController()
     
     # create the option parser
-    opts = optparse.OptionParser()
+    opts = optparse.OptionParser(version="What's On Air %s" % __version__)
     # add some options
-    opts.add_option("-v", "--version", dest="version", default=False,
-        action="store_true", help="print program & parsers' versions and exit")
     opts.add_option("-d", "--descriptive", dest="descriptive", default=False,
         action="store_true", help="print station names")
     opts.add_option("-a", "--all", dest="all", default=True,
@@ -128,10 +126,7 @@ def main():
         # add one more space
         max_length += 1
         
-        print insert_spaces("What's On Air", max_length) + __version__ 
-        print
-        for parser in allparsers.values():
-            print insert_spaces(parser.__station__, max_length) + parser.__version__
+        print "What's On Air %s" % __version__ 
         
         # version shown: exit now
         sys.exit(0)
@@ -174,12 +169,6 @@ def print_current(parser, descriptive):
         print current.__station__,
     # print the station informations
     print current.current_track()
-
-def insert_spaces(text, spaces):
-    """Inserts spaces at the end of the string to make it long.
-    This is useful for a constant formatting"""
-    append_spaces = spaces - len(text)
-    return text + append_spaces * ' '
 
 if __name__ == '__main__':
     main()

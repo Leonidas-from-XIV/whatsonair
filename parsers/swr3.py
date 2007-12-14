@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
-import base, re
+import base
 
 class SWR3Parser(base.StationBase):
     """Parser for SWR 3"""
     
     __station__ = 'SWR3'
-    __version__ = '0.2.0'
     
     def __init__(self, url='http://www.swr3.de/musik/musikrecherche/-/id=47424/nid=47424/did=202234/1213ds4/index.html',
         stream='rtsp://195.52.221.172/farm/*/encoder/swr3/livestream.rm'):

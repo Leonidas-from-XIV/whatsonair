@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class EinsLiveParser(base.StationBase):
     """Parser for EinsLive"""
     
     __station__ = 'EinsLive'
-    __version__ = '0.2.0'
     
     def __init__(self, url='http://www.einslive.de/musik/playlists/'):
         base.StationBase.__init__(self, url)
@@ -32,7 +31,7 @@ class EinsLiveParser(base.StationBase):
         self.artist, self.title = tracks[0]
     
     def current_track(self):
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = EinsLiveParser
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base
 
@@ -7,7 +7,6 @@ class EnergySaxParser(base.StationBase):
     """Energy in Saxonia"""
     
     __station__ = 'EnergySaxonia'
-    __version__ = '0.3.2'
     
     def __init__(self, url='http://www.energy.de/static/ticker/ticker.php?sender=sachsen'):
         base.StationBase.__init__(self, url)
@@ -20,7 +19,7 @@ class EnergySaxParser(base.StationBase):
         self.title = self.capstext(title)
     
     def current_track(self):
-        return "%s - %s" % (self.artist, self.title)
+        return u"%s - %s" % (self.artist, self.title)
 
 Parser = EnergySaxParser
 

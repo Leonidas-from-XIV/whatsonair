@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base, hr3
 
@@ -7,7 +7,6 @@ class HR1Parser(hr3.HR3Parser):
     """HR1"""
     
     __station__ = 'HR1'
-    __version__ = '0.1.2'
     
     def __init__(self, url='http://www3.admin.hr-online.de/playlist/playlist.php?tpl=hr1'):
         base.StationBase.__init__(self, url)

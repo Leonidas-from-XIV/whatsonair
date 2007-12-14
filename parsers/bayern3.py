@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
 import base, re
 
@@ -7,7 +7,6 @@ class Bayern3Parser(base.StationBase):
     """Parser for Bayern 3"""
     
     __station__ = 'Bayern3'
-    __version__ = '0.6.6'
     
     def __init__(self, url='http://www.br-online.de/bayern3/global/utils/homepage/nowonair.jsp'):
         base.StationBase.__init__(self, url)
@@ -30,7 +29,7 @@ class Bayern3Parser(base.StationBase):
     
     def current_track(self):
         if self.artist != '':
-            return "%s - %s" % (self.artist, self.title)
+            return u"%s - %s" % (self.artist, self.title)
         else:
             # no title - means "News" or things like this
             return self.title
