@@ -156,8 +156,13 @@ def print_current(parser, descriptive):
     # initialize the parser (it does not matter what parser)
     current = parser()
     # feed the parser - it gets the needed informations from the internet
-    current.feed()
-    # let the parser parse the gotten inforamtions
+    try:
+        current.feed()
+    except socket.timeout:
+        print '%s timed out' % current.__station
+        return
+
+    # let the parser parse the gotten informations
     current.parse()
     
     if descriptive:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# -*- encoding: latin-1 -*-
+# -*- encoding: UTF-8 -*-
 
-import base
+import base, urllib
 
 class GongParser(base.StationBase):
     """The parser for Gong"""
@@ -17,8 +17,8 @@ class GongParser(base.StationBase):
         track = self.cut_content_simple('%2C+', '+%2A')[0]
         artist, title = track.split('%2C+')
 
-        self.artist = self.capstext(artist.replace('+', ' '))
-        self.title = title.replace('+', ' ')
+        self.artist = self.capstext(urllib.unquote_plus(artist))
+        self.title = urllib.unquote_plus(title)
     
     def current_track(self):
         return u"%s - %s" % (self.artist, self.title)

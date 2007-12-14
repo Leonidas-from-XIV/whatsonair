@@ -9,7 +9,7 @@ class PlanetRadioParser(base.StationBase):
     """Parser for PlanetRadio"""
     
     __station__ = 'PlanetRadio'
-    __version__ = '0.2.0'
+    __version__ = '0.2.1'
     
     def __init__(self, url='http://www.planetradio.de/p_mt.php'):
         base.StationBase.__init__(self, url)
@@ -32,9 +32,11 @@ class PlanetRadioParser(base.StationBase):
                     continue
                 useful.append(td)
 
+        # group them into (title, artist)
         tracks = [(useful[a], useful[a+1]) for a in range(0, len(useful), 2)]
-        self.artist = self.capstext(tracks[0][0].string)
-        self.title = self.capstext(tracks[0][1].string)
+
+        self.title = self.capstext(tracks[0][0].string)
+        self.artist = self.capstext(tracks[0][1].string)
     
     def current_track(self):
         return "%s - %s" % (self.artist, self.title)
