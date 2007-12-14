@@ -64,7 +64,7 @@ class PluginController(object):
        
         for file in os.listdir(path):
             if file.endswith('.py') or file.endswith('.pyc'):
-                plug = __import__(file.split('.')[0],globals(),locals(),[])
+                plug = __import__(file.split('.')[0], globals(), locals(), [])
                 if not plug in self.pluginlist:
                     self.pluginlist.append(plug)
 
@@ -162,8 +162,12 @@ def print_current(parser, descriptive):
         print '%s timed out' % current.__station
         return
 
-    # let the parser parse the gotten informations
-    current.parse()
+    try:
+        # let the parser parse the gotten informations
+        current.parse()
+    except ValueError, e:
+        print '%s: %s' % (current.__station__, e.message)
+        return
 
     if descriptive:
         # add the station title if requested

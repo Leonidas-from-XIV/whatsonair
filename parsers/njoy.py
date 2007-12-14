@@ -20,8 +20,11 @@ class NJoyParser(base.StationBase):
         artists = self.cut_content('<td headers="headerB">', '</td>')
         titles = self.cut_content('<td headers="headerC">', '</td>')
         both = zip(artists, titles)
-        
-        self.artist, self.title = both[-1]
+
+        try:
+            self.artist, self.title = both[-1]
+        except IndexError:
+            raise ValueError('There is currently no song')
     
     def current_track(self):
         return "%s - %s" % (self.capstext(self.artist), self.title)
