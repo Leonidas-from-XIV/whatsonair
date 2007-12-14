@@ -107,7 +107,10 @@ def main():
     
     allparsers = {}
     for parser in plugcontrol:
+        # get the lower case name
         call = parser.__station__.lower()
+        # get rid of spaces
+        call = call.replace(' ', '')
         allparsers[call] = parser
         opts.add_option("--" + call, action="callback", 
             callback=parser_chosen, help="question " + parser.__station__)
