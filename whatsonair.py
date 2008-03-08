@@ -43,7 +43,7 @@ class PluginController(object):
             except AttributeError:
                 # it is not really a valid plugin, it has no Parser attribute
                 pass
-    
+
     def parser_dir(self):
         """Gets the path of the directory where the parsers can be found."""
         try:
@@ -56,12 +56,12 @@ class PluginController(object):
             appdir = os.path.dirname(sys.argv[0])
         pdir = os.path.join(appdir, 'parsers')
         return pdir
-       
+
     def import_plugins(self):
         """The actual plugin importer. It is called automatically
         by the constructor, you should not call it by yourself."""
         path = self.parser_dir()
-       
+
         for file in os.listdir(path):
             if file.endswith('.py') or file.endswith('.pyc'):
                 plug = __import__(file.split('.')[0], globals(), locals(), [])
@@ -74,10 +74,10 @@ def parser_chosen(option, opt, value, parser):
     and sets the chosen station as 'to crawl'"""
     # disable crawling of all stations
     parser.values.all = False
-    
+
     # get the name of the station
     station = opt[2:]
-    
+
     try:
         # try to append the station to the list of stations to be crawled
         parser.values.stations.append(station)
@@ -94,7 +94,7 @@ def main():
     requested by the user."""
     # create the plugin controller
     plugcontrol = PluginController()
-    
+
     # create the option parser
     opts = optparse.OptionParser(version="What's On Air %s" % __version__)
     # add some options
@@ -102,7 +102,7 @@ def main():
         action="store_true", help="print station names")
     opts.add_option("-a", "--all", dest="all", default=True,
         action="store_true", help="question all stations (default)")
-    
+
     allparsers = {}
     for parser in plugcontrol:
         # get the lower case name
@@ -110,27 +110,11 @@ def main():
         # get rid of spaces
         call = call.replace(' ', '')
         allparsers[call] = parser
-        opts.add_option("--" + call, action="callback", 
+        opts.add_option("--" + call, action="callback",
             callback=parser_chosen, help="question " + parser.__station__)
-    
+
     options, args = opts.parse_args()
-    
-    if options.version:
-        # show version
-        
-        # get the length of the longest parser name
-        max_length = 0
-        for parser in allparsers.values():
-            if len(parser.__station__) > max_length:
-                max_length = len(parser.__station__)
-        # add one more space
-        max_length += 1
-        
-        print "What's On Air %s" % __version__ 
-        
-        # version shown: exit now
-        sys.exit(0)
-    
+
     if options.all:
         # go through all stations
         options.descriptive = True
@@ -142,7 +126,7 @@ def main():
             # check whether to parse this particular station
             if name in options.stations:
                 print_current(parser, options.descriptive)
-        
+
 def print_current(parser, descriptive):
     """Prints the current title playing on a station
     parser is a BaseParser derived class and descriptive
